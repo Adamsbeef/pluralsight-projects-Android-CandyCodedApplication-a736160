@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,8 +58,14 @@ public class DetailActivity extends AppCompatActivity {
 
             ImageView imageView = (ImageView) this.findViewById(
                     R.id.image_view_candy);
-            Picasso.with(this).load(mCandyImageUrl).into(imageView);
+            Picasso.get().load(mCandyImageUrl).into(imageView);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        createShareIntent();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -66,6 +73,14 @@ public class DetailActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.detail, menu);
         return true;
+    }
+
+    private void createShareIntent(){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,SHARE_DESCRIPTION +
+                mCandyImageUrl + HASHTAG_CANDYCODED);
+        startActivity(shareIntent);
     }
 
     // ***
